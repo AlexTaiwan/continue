@@ -87,6 +87,15 @@ export const streamNormalInput = createAsyncThunk<
       console.error(message, JSON.stringify(getState(), null, 2));
       throw new Error(message);
     }
+
+    const MAX_AGENT_DEPTH = 50;
+    if (depth >= MAX_AGENT_DEPTH) {
+      console.warn(
+        `[Agent] Max agent loop depth of ${MAX_AGENT_DEPTH} reached, stopping to prevent infinite loop`,
+      );
+      dispatch(setInactive());
+      return;
+    }
     const state = getState();
     const selectedChatModel = selectSelectedChatModel(state);
 
@@ -331,12 +340,17 @@ export const streamNormalInput = createAsyncThunk<
       generatedCalls3,
       toolPolicies,
     );
+    // In agent mode, treat all non-disabled tools as auto-approved so the
+    // loop never pauses waiting for a human click.
+    const isAgentMode = state3.session.mode === "agent";
     const autoApprovedPolicies = policies.filter(
-      ({ policy }) => policy === "allowedWithoutPermission",
+      ({ policy }) =>
+        policy === "allowedWithoutPermission" ||
+        (isAgentMode && policy === "allowedWithPermission"),
     );
-    const needsApprovalPolicies = policies.filter(
-      ({ policy }) => policy === "allowedWithPermission",
-    );
+    const needsApprovalPolicies = isAgentMode
+      ? []
+      : policies.filter(({ policy }) => policy === "allowedWithPermission");
 
     // 4. Execute remaining tool calls
     if (originalToolCalls.length === 0) {

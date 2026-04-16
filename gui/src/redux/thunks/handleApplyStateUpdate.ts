@@ -49,11 +49,17 @@ export const handleApplyStateUpdate = createAsyncThunk<
           applyState.toolCallId,
         );
 
+        // Auto-accept the diff when the tool is fully approved (either
+        // explicitly set to allowedWithoutPermission, or we are in agent
+        // mode where all non-disabled tools run without human confirmation).
+        const isAgentMode = getState().session.mode === "agent";
         if (
           applyState.status === "done" &&
           toolCallState?.toolCall.function.name &&
-          getState().ui.toolSettings[toolCallState.toolCall.function.name] ===
-            "allowedWithoutPermission"
+          (isAgentMode ||
+            getState().ui.toolSettings[
+              toolCallState.toolCall.function.name
+            ] === "allowedWithoutPermission")
         ) {
           extra.ideMessenger.post("acceptDiff", {
             streamId: applyState.streamId,
