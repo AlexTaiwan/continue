@@ -30,6 +30,7 @@ export type ToIdeFromWebviewOrCoreProtocol = {
   openFile: [{ path: string }, void];
   openUrl: [string, void];
   runCommand: [{ command: string; options?: TerminalOptions }, void];
+  sendTerminalInput: [{ input: string; addNewline?: boolean }, void];
   getSearchResults: [{ query: string; maxResults?: number }, string];
   getFileResults: [{ pattern: string; maxResults?: number }, string[]];
   subprocess: [{ command: string; cwd?: string }, [string, string]];

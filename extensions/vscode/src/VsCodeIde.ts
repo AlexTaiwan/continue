@@ -355,6 +355,21 @@ class VsCodeIde implements IDE {
     terminal.sendText(command, false);
   }
 
+  async sendTerminalInput(
+    input: string,
+    addNewline: boolean = true,
+  ): Promise<void> {
+    // Pick the active terminal, or the first available one.
+    // If none exists, create one so there is always a target.
+    const terminal =
+      vscode.window.activeTerminal ??
+      vscode.window.terminals[0] ??
+      vscode.window.createTerminal();
+    terminal.show();
+    // sendText(text, addNewline) — second arg controls the trailing \n
+    terminal.sendText(input, addNewline);
+  }
+
   async saveFile(fileUri: string): Promise<void> {
     await this.ideUtils.saveFile(vscode.Uri.parse(fileUri));
   }

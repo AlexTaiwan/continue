@@ -873,6 +873,14 @@ export interface IDE {
 
   runCommand(command: string, options?: TerminalOptions): Promise<void>;
 
+  /**
+   * Send raw text input to the active VS Code integrated terminal.
+   * @param input      The text to send.
+   * @param addNewline When true (default) a newline is appended so the
+   *                   terminal treats the input as Enter being pressed.
+   */
+  sendTerminalInput(input: string, addNewline?: boolean): Promise<void>;
+
   saveFile(fileUri: string): Promise<void>;
 
   readFile(fileUri: string): Promise<string>;

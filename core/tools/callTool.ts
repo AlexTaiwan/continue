@@ -17,9 +17,11 @@ import { readFileImpl } from "./implementations/readFile";
 
 import { readFileRangeImpl } from "./implementations/readFileRange";
 import { readSkillImpl } from "./implementations/readSkill";
+import { readTerminalImpl } from "./implementations/readTerminal";
 import { requestRuleImpl } from "./implementations/requestRule";
 import { runTerminalCommandImpl } from "./implementations/runTerminalCommand";
 import { searchWebImpl } from "./implementations/searchWeb";
+import { sendTerminalInputImpl } from "./implementations/sendTerminalInput";
 import { viewDiffImpl } from "./implementations/viewDiff";
 import { viewRepoMapImpl } from "./implementations/viewRepoMap";
 import { viewSubdirectoryImpl } from "./implementations/viewSubdirectory";
@@ -220,6 +222,10 @@ export async function callBuiltInTool(
       return await codebaseToolImpl(args, extras);
     case BuiltInToolNames.ReadSkill:
       return await readSkillImpl(args, extras);
+    case BuiltInToolNames.ReadTerminal:
+      return await readTerminalImpl(args, extras);
+    case BuiltInToolNames.SendTerminalInput:
+      return await sendTerminalInputImpl(args, extras);
     case BuiltInToolNames.ViewRepoMap:
       return await viewRepoMapImpl(args, extras);
     case BuiltInToolNames.ViewSubdirectory:

@@ -722,6 +722,9 @@ export class VsCodeMessenger {
     this.onWebviewOrCore("runCommand", async (msg) => {
       await ide.runCommand(msg.data.command);
     });
+    this.onWebviewOrCore("sendTerminalInput", async (msg) => {
+      await ide.sendTerminalInput(msg.data.input, msg.data.addNewline);
+    });
     this.onWebviewOrCore("getSearchResults", async (msg) => {
       return ide.getSearchResults(msg.data.query, msg.data.maxResults);
     });

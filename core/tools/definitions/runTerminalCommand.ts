@@ -57,6 +57,11 @@ export const runTerminalCommandTool: Tool = {
           description:
             "Whether to wait for the command to complete before returning. Default is true. Set to false to run the command in the background. Set to true to run the command in the foreground and wait to collect the output.",
         },
+        stdin: {
+          type: "string",
+          description:
+            "Optional text to pipe into the command's standard input. Use this to answer interactive prompts automatically, e.g. pass \"y\\n\" to confirm a yes/no question. Each line should end with \\n.",
+        },
       },
     },
   },

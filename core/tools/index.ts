@@ -7,6 +7,8 @@ export const getBaseToolDefinitions = () => [
   toolDefinitions.readFileTool,
   toolDefinitions.createNewFileTool,
   toolDefinitions.runTerminalCommandTool,
+  toolDefinitions.readTerminalTool,
+  toolDefinitions.sendTerminalInputTool,
   toolDefinitions.globSearchTool,
   toolDefinitions.viewDiffTool,
   toolDefinitions.readCurrentlyOpenFileTool,

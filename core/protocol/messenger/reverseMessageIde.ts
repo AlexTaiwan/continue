@@ -134,6 +134,10 @@ export class ReverseMessageIde {
       return this.ide.runCommand(data.command);
     });
 
+    this.on("sendTerminalInput", (data) => {
+      return this.ide.sendTerminalInput(data.input, data.addNewline);
+    });
+
     this.on("saveFile", (data) => {
       return this.ide.saveFile(data.filepath);
     });

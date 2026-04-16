@@ -18,6 +18,9 @@ export enum BuiltInToolNames {
   CodebaseTool = "codebase",
   ReadSkill = "read_skill",
 
+  ReadTerminal = "read_terminal",
+  SendTerminalInput = "send_terminal_input",
+
   // excluded from allTools for now
   ViewRepoMap = "view_repo_map",
   ViewSubdirectory = "view_subdirectory",

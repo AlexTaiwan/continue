@@ -45,7 +45,7 @@ import {
   removeRunningProcess,
   updateProcessOutput,
 } from "../../util/processTerminalStates";
-import { getBooleanArg, getStringArg } from "../parseArgs";
+import { getBooleanArg, getOptionalStringArg, getStringArg } from "../parseArgs";
 
 /**
  * Resolves the working directory from workspace dirs.
@@ -111,6 +111,8 @@ export const runTerminalCommandImpl: ToolImpl = async (args, extras) => {
   // Default to waiting for completion if not specified
   const waitForCompletion =
     getBooleanArg(args, "waitForCompletion", false) ?? true;
+  // Optional stdin text to pipe into the spawned process
+  const stdinInput = getOptionalStringArg(args, "stdin", true);
 
   const ideInfo = await extras.ide.getIdeInfo();
   const toolCallId = extras.toolCallId || "";
@@ -150,6 +152,13 @@ export const runTerminalCommandImpl: ToolImpl = async (args, extras) => {
             cwd,
             env: getColorEnv(), // Add enhanced environment for colors
           });
+
+          // Pipe optional stdin text into the process and close the stream
+          // so commands that read from stdin (e.g. apt-get, npm init) don't block.
+          if (stdinInput !== undefined && childProc.stdin) {
+            childProc.stdin.write(stdinInput);
+            childProc.stdin.end();
+          }
 
           // Track this process for foreground cancellation
           if (toolCallId && waitForCompletion) {
@@ -390,6 +399,12 @@ export const runTerminalCommandImpl: ToolImpl = async (args, extras) => {
                   env: getColorEnv(),
                 },
               );
+
+              // Pipe optional stdin text and close the stream
+              if (stdinInput !== undefined && childProc.stdin) {
+                childProc.stdin.write(stdinInput);
+                childProc.stdin.end();
+              }
 
               // Track this process for foreground cancellation
               if (toolCallId) {

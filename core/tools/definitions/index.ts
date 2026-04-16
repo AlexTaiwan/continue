@@ -11,6 +11,8 @@ export { readCurrentlyOpenFileTool } from "./readCurrentlyOpenFile";
 export { readFileTool } from "./readFile";
 
 export { readFileRangeTool } from "./readFileRange";
+export { readTerminalTool } from "./readTerminal";
+export { sendTerminalInputTool } from "./sendTerminalInput";
 export { readSkillTool } from "./readSkill";
 export { requestRuleTool } from "./requestRule";
 export { runTerminalCommandTool } from "./runTerminalCommand";
